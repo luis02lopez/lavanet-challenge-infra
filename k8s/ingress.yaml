@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: isbn-backend
+  name: ingress-isbn-backend
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internal
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/actions.forward-multiple-tg: >
+      {"type":"forward","forwardConfig":{"targetGroups":[{"serviceName":"service-isbn-backend-server1","servicePort":80,"weight":60},{"serviceName":"service-isbn-backend-server2","servicePort":80,"weight":40}]}}
+spec:
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            serviceName: forward-multiple-tg
+            servicePort: use-annotation

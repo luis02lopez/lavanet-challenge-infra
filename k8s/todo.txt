@@ -1,0 +1,8 @@
+*
+Resources for the installation of the OIDC IAM provider for the ALB
+Resources on IAM policies and roles for the ALB controller
+Helm commands to install the ALB controller
+Pipeline for the application
+Add extras to the EKS deployment
+Add documentation
+Create helper function in the Flask app
