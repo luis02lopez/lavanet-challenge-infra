@@ -1,10 +1,14 @@
+# Ingress controller with AWS ALB, which will weight the traffic and send 
+# the requests in a 60-40% basis to the backend versions, regardless of the amount of
+# servers.
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   namespace: isbn-backend
-  name: ingress-isbn-backend
+  name: ingress-backend
   annotations:
-    alb.ingress.kubernetes.io/scheme: internal
+    alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/actions.forward-multiple-tg: >
       {"type":"forward","forwardConfig":{"targetGroups":[{"serviceName":"service-isbn-backend-server1","servicePort":80,"weight":60},{"serviceName":"service-isbn-backend-server2","servicePort":80,"weight":40}]}}
@@ -16,5 +20,21 @@ spec:
         - path: /
           pathType: Prefix
           backend:
-            serviceName: forward-multiple-tg
-            servicePort: use-annotation
+            service:
+                name: targets
+                port:
+                  name: use-annotation
+        - path: /server1
+          pathType: Prefix
+          backend:
+            service:
+              name: service-backend
+              port:
+                number: 80
+        - path: /server2
+          pathType: Prefix
+          backend:
+            service:
+              name: service-backend-2
+              port:
+                number: 80

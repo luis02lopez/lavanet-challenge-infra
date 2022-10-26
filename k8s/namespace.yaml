@@ -1,3 +1,5 @@
+# Namespace for the Kubernetes backend application.
+---
 apiVersion: v1
 kind: Namespace
 metadata:

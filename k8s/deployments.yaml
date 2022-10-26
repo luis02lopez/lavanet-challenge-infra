@@ -1,0 +1,51 @@
+# Deployment configurations, to create the neccesary pods and read replicas objects
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: isbn-backend
+  name: deployment-backend
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: app-backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: app-backend
+    spec:
+      containers:
+      - image: 392232677325.dkr.ecr.us-east-1.amazonaws.com/lavanet-ecr:main
+        env:
+          - name: FLASK_BACKEND_IDENTIFIER
+            value: "Server1"
+        imagePullPolicy: Always
+        name: app-backend
+        ports:
+        - containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: isbn-backend
+  name: deployment-backend-2
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: app-backend-2
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: app-backend-2
+    spec:
+      containers:
+      - image: 392232677325.dkr.ecr.us-east-1.amazonaws.com/lavanet-ecr:main
+        env:
+          - name: FLASK_BACKEND_IDENTIFIER
+            value: "Server2"
+        imagePullPolicy: Always
+        name: app-backend
+        ports:
+        - containerPort: 80

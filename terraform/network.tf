@@ -1,3 +1,4 @@
+# Terraform official VPC module to create networking resources.
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "3.18.0"
@@ -14,10 +15,14 @@ module "vpc" {
   public_subnet_tags = {
     Name    = "${var.service_name}-public"
     Service = var.service_name
+    "kubernetes.io/cluster/${var.service_name}" = "shared"
+    "kubernetes.io/role/elb"              = 1
   }
   private_subnet_tags = {
     Name    = "${var.service_name}-private"
     Service = var.service_name
+    "kubernetes.io/cluster/${var.service_name}" = "shared"
+    "kubernetes.io/role/internal-elb"     = 1
   }
 
   tags = {

@@ -1,3 +1,5 @@
+# Autoscaling configuration for AWS EKS, this will create a metrics server
+# which will be responsible of providing accurate metrics to scale in or out
 apiVersion: v1
 kind: ServiceAccount
 metadata:
